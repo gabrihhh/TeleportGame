@@ -3,17 +3,14 @@ const canvas = document.getElementById('meuCanvas');
 const ctx = canvas.getContext('2d');
 canvas.style.border = '1px solid black';
 //AQUI INSTANCIAR OS PLAYERS E OBJETOS
+let points = 0
+let lazerSpeed = 1
 //tamanho da tela
 const canvasWidth = 600;
 const canvasHeight = 600;
 //player
 let player = {x:280,y:280,w:30,h:30};
-let lazer0 = {
-    xInicial:0,
-    xFinal:canvasWidth,
-    yInicial:0,
-    yFinal: 0
-}
+
 let centroPlayer = {x:player.x+(player.w/2),y:player.y+(player.h/2)}
 
 //pontos do final da linha de teleport
@@ -35,9 +32,10 @@ let keyRight = false
 //teleport
 let teleport = true;
 
+//lazers
+let lazers = [];
 //inicio
-
-
+let lazer = Math.round(Math.random()*3)
 proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo)
 
 
@@ -74,7 +72,34 @@ function teletransport(ponto,centroPlayer){
     }
 }
 
+createLazer(3)
+function createLazer(num){
+    let lazer = {
+        num:num,
+        xInicial:0,
+        yInicial:0,
+        xFinal:0,
+        yFinal: 0
+    }
+    if(num == 0){
+        lazer.xFinal = canvasWidth;
+    }
+    if(num == 1){
+        lazer.xInicial= canvasWidth;
+        lazer.xFinal=canvasWidth;
+        lazer.yFinal=canvasHeight;
+    }
+    if(num == 2){
+        lazer.xInicial = canvasWidth;
+        lazer.yInicial = canvasHeight;
+        lazer.yFinal = canvasHeight;
+    }
+    if(num == 3){
+        lazer.yInicial = canvasHeight;
+    }
 
+    lazers.push(lazer)
+}
 
 
 
@@ -93,6 +118,10 @@ function init(){
 function draw(){
     ctx.beginPath();
     //AQUI ENTRA A CRIAÇÃO DAS COISAS NA TELA
+        //pontuação
+        ctx.font = "30px serif"
+        ctx.fillText(`points: ${points}`,10,30);
+
         //CUBO
         ctx.fillStyle = "black"
         ctx.fillRect(player.x,player.y,player.w,player.h)
@@ -107,11 +136,13 @@ function draw(){
         ctx.arc(ponto.x,ponto.y,2,0,Math.PI*2)
         ctx.fill()
 
-        //lazer de cima
-        ctx.lineWidth = 1
-        ctx.moveTo(lazer0.xInicial,lazer0.yInicial)
-        ctx.lineTo(lazer0.xFinal,lazer0.yFinal)
-        ctx.stroke()
+        //lazers
+        lazers.forEach((e)=>{
+            ctx.lineWidth = 1
+            ctx.moveTo(e.xInicial,e.yInicial)
+            ctx.lineTo(e.xFinal,e.yFinal)
+            ctx.stroke()
+        })
 
     ctx.closePath()
 }
@@ -153,7 +184,24 @@ function move(){
         }
     })
 
-    
+    lazers.forEach((e)=>{
+        if(e.num == 0){
+            e.yInicial+=lazerSpeed
+            e.yFinal+=lazerSpeed
+        }
+        if(e.num == 1){
+            e.xInicial-=lazerSpeed
+            e.xFinal-=lazerSpeed
+        }
+        if(e.num == 2){
+            e.yInicial-=lazerSpeed
+            e.yFinal-=lazerSpeed
+        }
+        if(e.num == 3){
+            e.xInicial+=lazerSpeed
+            e.xFinal+=lazerSpeed
+        }
+    })
 
 
 
@@ -242,9 +290,26 @@ function colision(){
         if(player.x>0&&player.x+player.w<canvasWidth&&player.y>0&&player.y+player.h<canvasHeight){
             cuboBorda=false
         }
+
+    //colisão do cubo com as linhas
+        lazers.forEach((e)=>{
+            if(e.num == 0 || e.num == 2){
+                if(e.yInicial >= player.y && e.yInicial<=player.y+player.h){
+                    alert('voce perdeu')
+                }
+            }
+            if(e.num == 1 || e.num == 3){
+               if(e.xInicial>= player.x && e.xInicial<= player.x+player.w){
+                    alert('voce perdeu')
+               }
+            }
+        })
     //COLISÃO ACABA AQUI
 }
 init()
 setInterval(()=>{
     proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo); 
 },500)
+setInterval(()=>{
+    points++ 
+},1000)
