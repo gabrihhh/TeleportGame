@@ -35,7 +35,6 @@ let teleport = true;
 //lazers
 let lazers = [];
 //inicio
-let lazer = Math.round(Math.random()*3)
 proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo)
 
 
@@ -71,8 +70,6 @@ function teletransport(ponto,centroPlayer){
         },5000)
     }
 }
-
-createLazer(3)
 function createLazer(num){
     let lazer = {
         num:num,
@@ -312,4 +309,7 @@ setInterval(()=>{
 },500)
 setInterval(()=>{
     points++ 
+},1000)
+setInterval(()=>{
+    createLazer(Math.round(Math.random()*3))
 },1000)
