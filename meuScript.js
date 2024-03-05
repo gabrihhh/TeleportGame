@@ -1,6 +1,5 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
@@ -17,8 +16,7 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const analytics = getAnalytics(app);  
+const app = initializeApp(firebaseConfig); 
 
 const canvas = document.getElementById('meuCanvas');
 const ctx = canvas.getContext('2d');
@@ -41,7 +39,7 @@ let speed = 5;
 
 //função da linha de teleport
 const raio = 100;
-const incrementoAngulo = Math.PI / 4; 
+const incrementoAngulo = Math.PI /20; 
 let anguloAtual = 0;
 let cuboBorda = false;
 //movimentacao
@@ -145,12 +143,6 @@ function draw(){
         //CUBO
         ctx.fillStyle = "black"
         ctx.fillRect(player.x,player.y,player.w,player.h)
-        
-        //LINHA DE TELEPORT
-        ctx.lineWidth = 5
-        ctx.moveTo(centroPlayer.x, centroPlayer.y);
-        ctx.lineTo(ponto.x, ponto.y);
-        ctx.stroke();
 
         //circulo da ponta
         ctx.arc(ponto.x,ponto.y,2,0,Math.PI*2)
@@ -333,7 +325,7 @@ function colision(){
 init()
 const teleportador = setInterval(()=>{
     proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo); 
-},500)
+},50)
 const criadorPontos = setInterval(()=>{
     points++ 
 },1000)
