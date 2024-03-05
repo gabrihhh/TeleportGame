@@ -18,10 +18,50 @@
         canvas{
             background-color: white;
         }
+        .modal{
+            display: none;
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            h1{
+                font-size: 30px;
+            }
+            label{
+                margin-top: 20px;
+                font-size: 15px;
+            }
+            input{
+                margin-top: 20px;
+                width: 300px;
+                height: 40px;
+                font-size: 20px;
+                padding-left: 10px;
+            }
+            button{
+                margin-top: 20px;
+                padding: 10px 20px;
+                border: 2px solid black;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+        }
     </style>
 </head>
 <body>
+    <div id="modal" class="modal">
+        <h1>Você perdeu!</h1>
+        <br>
+        <label>Coloque seu nome para entrar no rank.</label>
+        <input id="nome" type="text">
+        <button id="enviar">Enviar pontuação</button>
+        <button id="ranking">Ver Ranking</button>
+        <label>Para jogar novamente apenas reinicie a página.</label>
+    </div>
     <canvas id="meuCanvas" width="600" height="600"></canvas>
-    <script src="meuScript.js"></script>
+    <script type="module" src="meuScript.js"></script>
 </body>
 </html>

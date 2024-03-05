@@ -1,3 +1,24 @@
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
+import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-analytics.js";
+// TODO: Add SDKs for Firebase products that you want to use
+// https://firebase.google.com/docs/web/setup#available-libraries
+
+// Your web app's Firebase configuration
+// For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBuvDVa9zEfMiWXZ8C1qjZBcQDRpMLYAbk",
+  authDomain: "teleportgame-1af85.firebaseapp.com",
+  projectId: "teleportgame-1af85",
+  storageBucket: "teleportgame-1af85.appspot.com",
+  messagingSenderId: "61042333744",
+  appId: "1:61042333744:web:050a1b6eb7d855c2a535f5",
+  measurementId: "G-QV2GSQL6QC"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);  
 
 const canvas = document.getElementById('meuCanvas');
 const ctx = canvas.getContext('2d');
@@ -94,7 +115,13 @@ function createLazer(num){
     lazers.push(lazer)
 }
 
+function desligar(){
+    clearInterval(teleportador)
+    clearInterval(criadorPontos)
+    clearInterval(criadorLazers)
+    document.getElementById('modal').style.display = "flex"
 
+}
 
 
 
@@ -175,6 +202,10 @@ function move(){
         if(e.code == 'ArrowRight'){
             keyRight=false
         }
+    })
+
+    document.getElementById('enviar').addEventListener('click',()=>{
+        console.log(document.getElementById('nome').value)
     })
 
     lazers.forEach((e)=>{
@@ -288,24 +319,24 @@ function colision(){
         lazers.forEach((e)=>{
             if(e.num == 0 || e.num == 2){
                 if(e.yInicial >= player.y && e.yInicial<=player.y+player.h){
-                    alert('voce perdeu')
+                    desligar()
                 }
             }
             if(e.num == 1 || e.num == 3){
                if(e.xInicial>= player.x && e.xInicial<= player.x+player.w){
-                    alert('voce perdeu')
+                    desligar()
                }
             }
         })
     //COLISÃO ACABA AQUI
 }
 init()
-setInterval(()=>{
+const teleportador = setInterval(()=>{
     proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo); 
-},300)
-setInterval(()=>{
+},500)
+const criadorPontos = setInterval(()=>{
     points++ 
 },1000)
-setInterval(()=>{
+const criadorLazers = setInterval(()=>{
     createLazer(Math.round(Math.random()*3))
-},1000)
+},1500)
