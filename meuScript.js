@@ -8,6 +8,12 @@ const canvasWidth = 600;
 const canvasHeight = 600;
 //player
 let player = {x:280,y:280,w:30,h:30};
+let lazer0 = {
+    xInicial:0,
+    xFinal:canvasWidth,
+    yInicial:0,
+    yFinal: 0
+}
 let centroPlayer = {x:player.x+(player.w/2),y:player.y+(player.h/2)}
 
 //pontos do final da linha de teleport
@@ -28,6 +34,9 @@ let keyRight = false
 
 //teleport
 let teleport = true;
+
+//inicio
+
 
 proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo)
 
@@ -88,16 +97,22 @@ function draw(){
         ctx.fillStyle = "black"
         ctx.fillRect(player.x,player.y,player.w,player.h)
         
-        ctx.arc(ponto.x,ponto.y,2,0,Math.PI*2)
-        ctx.fill()
-        
-        
         //LINHA DE TELEPORT
-        
         ctx.lineWidth = 5
         ctx.moveTo(centroPlayer.x, centroPlayer.y);
         ctx.lineTo(ponto.x, ponto.y);
         ctx.stroke();
+
+        //circulo da ponta
+        ctx.arc(ponto.x,ponto.y,2,0,Math.PI*2)
+        ctx.fill()
+
+        //lazer de cima
+        ctx.lineWidth = 1
+        ctx.moveTo(lazer0.xInicial,lazer0.yInicial)
+        ctx.lineTo(lazer0.xFinal,lazer0.yFinal)
+        ctx.stroke()
+
     ctx.closePath()
 }
 function move(){
@@ -106,26 +121,18 @@ function move(){
         if(e.code == 'ArrowDown'){
             keyDown=true
             keyUp=false
-            keyLeft=false
-            keyRight=false
         }
         if(e.code == 'ArrowUp'){
             keyUp=true
-            keyLeft=false
-            keyRight=false
             keyDown=false
         }
         if(e.code == 'ArrowLeft'){
             keyLeft=true
             keyRight=false
-            keyDown=false
-            keyUp=false
         }
         if(e.code == 'ArrowRight'){
             keyRight=true
             keyLeft=false
-            keyUp=false
-            keyDown=false
         }
         if(e.code == 'Space'){
             teletransport(ponto,centroPlayer)
