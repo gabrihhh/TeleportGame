@@ -19,6 +19,7 @@ let speed = 5;
 const raio = 100;
 const incrementoAngulo = Math.PI / 4; 
 let anguloAtual = 0;
+let cuboBorda = false;
 //movimentacao
 let keyDown = false;
 let keyUp = false;
@@ -104,15 +105,27 @@ function move(){
     document.addEventListener('keydown',(e)=>{
         if(e.code == 'ArrowDown'){
             keyDown=true
+            keyUp=false
+            keyLeft=false
+            keyRight=false
         }
         if(e.code == 'ArrowUp'){
             keyUp=true
+            keyLeft=false
+            keyRight=false
+            keyDown=false
         }
         if(e.code == 'ArrowLeft'){
             keyLeft=true
+            keyRight=false
+            keyDown=false
+            keyUp=false
         }
         if(e.code == 'ArrowRight'){
             keyRight=true
+            keyLeft=false
+            keyUp=false
+            keyDown=false
         }
         if(e.code == 'Space'){
             teletransport(ponto,centroPlayer)
@@ -138,28 +151,52 @@ function move(){
 
 
     if(keyDown){
-        player.y+=speed
-        ponto.y+=speed
-        centroPlayer.x=player.x+(player.w/2)
-        centroPlayer.y=player.y+(player.h/2)
+        if(cuboBorda){
+            player.y+=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }else{
+            player.y+=speed
+            ponto.y+=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }
     }
     if(keyUp){
-        player.y-=speed
-        ponto.y-=speed
-        centroPlayer.x=player.x+(player.w/2)
-        centroPlayer.y=player.y+(player.h/2)
+        if(cuboBorda){
+            player.y-=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }else{
+            player.y-=speed
+            ponto.y-=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }
     }
     if(keyLeft){
-        player.x-=speed
-        ponto.x-=speed
-        centroPlayer.x=player.x+(player.w/2)
-        centroPlayer.y=player.y+(player.h/2)
+        if(cuboBorda){
+            player.x-=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }else{
+            player.x-=speed
+            ponto.x-=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }  
     }
     if(keyRight){
-        player.x+=speed
-        ponto.x+=speed
-        centroPlayer.x=player.x+(player.w/2)
-        centroPlayer.y=player.y+(player.h/2)
+        if(cuboBorda){
+            player.x+=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }else{
+            player.x+=speed
+            ponto.x+=speed
+            centroPlayer.x=player.x+(player.w/2)
+            centroPlayer.y=player.y+(player.h/2)
+        }
     }
     //MOVIMENTACAO ACABA AQUI
 }
@@ -180,16 +217,23 @@ function colision(){
         }
     //colisão do cubo com a borda do mapa
         if(player.x<0){
+            cuboBorda=true
             player.x = 0
         }
         if(player.x+player.w>canvasWidth){
+            cuboBorda=true
             player.x = canvasWidth-player.w
         }
         if(player.y<0){
+            cuboBorda=true
             player.y = 0   
         }
         if(player.y+player.h>canvasHeight){
+            cuboBorda=true
             player.y = canvasHeight-player.h
+        }
+        if(player.x>0&&player.x+player.w<canvasWidth&&player.y>0&&player.y+player.h<canvasHeight){
+            cuboBorda=false
         }
     //COLISÃO ACABA AQUI
 }
