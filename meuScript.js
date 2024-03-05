@@ -7,7 +7,7 @@ canvas.style.border = '1px solid black';
 const canvasWidth = 600;
 const canvasHeight = 600;
 //player
-let player = {x:100,y:100,w:30,h:30};
+let player = {x:280,y:280,w:30,h:30};
 let centroPlayer = {x:player.x+(player.w/2),y:player.y+(player.h/2)}
 
 //pontos do final da linha de teleport
@@ -85,11 +85,11 @@ function draw(){
     ctx.beginPath();
     //AQUI ENTRA A CRIAÇÃO DAS COISAS NA TELA
         //CUBO
-        ctx.fillStyle = "gray"
+        ctx.fillStyle = "black"
         ctx.fillRect(player.x,player.y,player.w,player.h)
         
-        
-        
+        ctx.arc(ponto.x,ponto.y,2,0,Math.PI*2)
+        ctx.fill()
         
         
         //LINHA DE TELEPORT
