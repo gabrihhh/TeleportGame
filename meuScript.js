@@ -12,6 +12,7 @@ const incrementoAngulo = Math.PI / 4;
 let anguloAtual = 0;
 let keyDown,keyUp,keyLeft,keyRight = false
 let teleport = true;
+let teleportCooldown = false;
 proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo)
 
 
@@ -35,13 +36,16 @@ function proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo) {
     ponto.y = y;
 }
 
-function teletransport(){
+function teletransport(ponto,centroPlayer){
     if(teleport){
         centroPlayer.x = ponto.x
         centroPlayer.y = ponto.y
-        player.x = centroPlayer.x-(player.width/2)
-        player.y = centroPlayer.y-(player.height/2)
+        player.x = centroPlayer.x-(player.w/2)
+        player.y = centroPlayer.y-(player.h/2)
         teleport=false
+        setTimeout(()=>{
+            teleport=true
+        },5000)
     }
 }
 
@@ -62,29 +66,27 @@ function init(){
     requestAnimationFrame(init);
 }
 function draw(){
+    ctx.beginPath();
     //AQUI ENTRA A CRIAÇÃO DAS COISAS NA TELA
         //CUBO
         ctx.fillStyle = "gray"
         ctx.fillRect(player.x,player.y,player.w,player.h)
         
         
-            
+        
         
         
         //LINHA DE TELEPORT
+        
         ctx.lineWidth = 5
-        ctx.beginPath(); 
         ctx.moveTo(centroPlayer.x, centroPlayer.y);
         ctx.lineTo(ponto.x, ponto.y);
         ctx.stroke();
-
-    //DRAW ACABA AQUI
-    ctx.closePath();
+    ctx.closePath()
 }
 function move(){
     //AQUI ENTRA A MOVIMENTAÇÃO E MANIPULAÇÃO DOS OBJETOS
     document.addEventListener('keydown',(e)=>{
-        console.log(e.code)
         if(e.code == 'ArrowDown'){
             keyDown=true
         }
@@ -98,7 +100,7 @@ function move(){
             keyRight=true
         }
         if(e.code == 'Space'){
-            teletransport()
+            teletransport(ponto,centroPlayer)
         }
     })
     document.addEventListener('keyup',(e)=>{
@@ -113,11 +115,6 @@ function move(){
         }
         if(e.code == 'ArrowRight'){
             keyRight=false
-        }
-        if(e.code == 'Space'){
-            setTimeout(()=>{
-                teleport=true
-            },5000)
         }
     })
 
