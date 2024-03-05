@@ -3,16 +3,31 @@ const canvas = document.getElementById('meuCanvas');
 const ctx = canvas.getContext('2d');
 canvas.style.border = '1px solid black';
 //AQUI INSTANCIAR OS PLAYERS E OBJETOS
+//tamanho da tela
+const canvasWidth = 600;
+const canvasHeight = 600;
+//player
 let player = {x:100,y:100,w:30,h:30};
 let centroPlayer = {x:player.x+(player.w/2),y:player.y+(player.h/2)}
+
+//pontos do final da linha de teleport
 let ponto = {x:0,y:0};
+//velocidade de movimento
 let speed = 5;
+
+//função da linha de teleport
 const raio = 100;
 const incrementoAngulo = Math.PI / 4; 
 let anguloAtual = 0;
-let keyDown,keyUp,keyLeft,keyRight = false
+//movimentacao
+let keyDown = false;
+let keyUp = false;
+let keyLeft = false;
+let keyRight = false
+
+//teleport
 let teleport = true;
-let teleportCooldown = false;
+
 proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo)
 
 
@@ -150,7 +165,32 @@ function move(){
 }
 function colision(){
     //AQUI ENTRA A COLISAO
-
+    //Colisão do final da linha com a borda do mapa
+        if(ponto.x>canvasWidth){
+            ponto.x = canvasWidth
+        }
+        if(ponto.x<0){
+            ponto.x = 0
+        }
+        if(ponto.y>canvasHeight){
+            ponto.y = canvasHeight
+        }
+        if(ponto.y<0){
+            ponto.y = 0
+        }
+    //colisão do cubo com a borda do mapa
+        if(player.x<0){
+            player.x = 0
+        }
+        if(player.x+player.w>canvasWidth){
+            player.x = canvasWidth-player.w
+        }
+        if(player.y<0){
+            player.y = 0   
+        }
+        if(player.y+player.h>canvasHeight){
+            player.y = canvasHeight-player.h
+        }
     //COLISÃO ACABA AQUI
 }
 init()
