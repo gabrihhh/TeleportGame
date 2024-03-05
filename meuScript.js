@@ -9,7 +9,7 @@ let lazerSpeed = 1
 const canvasWidth = 600;
 const canvasHeight = 600;
 //player
-let player = {x:280,y:280,w:30,h:30};
+let player = {x:280,y:280,w:10,h:10};
 
 let centroPlayer = {x:player.x+(player.w/2),y:player.y+(player.h/2)}
 
@@ -64,10 +64,6 @@ function teletransport(ponto,centroPlayer){
         centroPlayer.y = ponto.y
         player.x = centroPlayer.x-(player.w/2)
         player.y = centroPlayer.y-(player.h/2)
-        teleport=false
-        setTimeout(()=>{
-            teleport=true
-        },5000)
     }
 }
 function createLazer(num){
@@ -306,7 +302,7 @@ function colision(){
 init()
 setInterval(()=>{
     proximoPontoEmSentidoHorario(centroPlayer, raio, incrementoAngulo); 
-},500)
+},300)
 setInterval(()=>{
     points++ 
 },1000)
