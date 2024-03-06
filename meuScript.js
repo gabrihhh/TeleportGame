@@ -1,10 +1,6 @@
-// Import the functions you need from the SDKs you need
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js';
+import { getFirestore, collection, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyBuvDVa9zEfMiWXZ8C1qjZBcQDRpMLYAbk",
   authDomain: "teleportgame-1af85.firebaseapp.com",
@@ -15,8 +11,16 @@ const firebaseConfig = {
   measurementId: "G-QV2GSQL6QC"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig); 
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+async function getTop(){
+    const q = query(collection(db, "pontuacao"), orderBy("ponto", "desc"), limit(10));
+    const querySnapshot = await getDocs(q);
+    const topPontuacoes = querySnapshot.docs.map(doc => doc.data());
+    return topPontuacoes;
+}
+
 
 const canvas = document.getElementById('meuCanvas');
 const ctx = canvas.getContext('2d');
@@ -332,3 +336,15 @@ const criadorPontos = setInterval(()=>{
 const criadorLazers = setInterval(()=>{
     createLazer(Math.round(Math.random()*3))
 },1500)
+
+document.getElementById('ranking').addEventListener('click',async ()=>{
+    let top = await getTop();
+    console.log(top)
+    document.getElementById('rank').style.display = 'flex'
+    for(let i = 0; i<top.length; i++){
+        document.getElementById(`rank${i}`).textContent = top[i].nome+' : '+ top[i].ponto;
+    }
+})
+document.getElementById('closeRanking').addEventListener('click',()=>{
+    document.getElementById('rank').style.display = 'none'
+})

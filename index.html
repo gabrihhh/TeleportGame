@@ -19,6 +19,7 @@
             background-color: white;
         }
         .modal{
+            z-index: 1;
             display: none;
             position: absolute;
             width: 800px;
@@ -49,6 +50,35 @@
                 cursor: pointer;
             }
         }
+        .rank{
+            z-index: 2;
+            display: none;
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            div{
+                width: 600px;
+                margin: 5px;
+                height: 40px;
+                display: flex;
+                justify-content: flex-start;
+                align-items: center;
+            }
+            label{
+                font-size: 25px;
+            }
+            button{
+                margin-top: 20px;
+                padding: 10px 20px;
+                border: 2px solid black;
+                border-radius: 10px;
+                cursor: pointer;
+            }
+        }
     </style>
 </head>
 <body>
@@ -60,6 +90,21 @@
         <button id="enviar">Enviar pontuação</button>
         <button id="ranking">Ver Ranking</button>
         <label>Para jogar novamente apenas reinicie a página.</label>
+    </div>
+    <div id="rank" class="rank">
+        <h1>Ranking</h1>
+        <br>
+        <div><h1>1 -> </h1><label id="rank0"></label></div><br>
+        <div><h1>2 -> </h1><label id="rank1"></label></div><br>
+        <div><h1>3 -> </h1><label id="rank2"></label></div><br>
+        <div><h1>4 -> </h1><label id="rank3"></label></div><br>
+        <div><h1>5 -> </h1><label id="rank4"></label></div><br>
+        <div><h1>6 -> </h1><label id="rank5"></label></div><br>
+        <div><h1>7 -> </h1><label id="rank6"></label></div><br>
+        <div><h1>8 -> </h1><label id="rank7"></label></div><br>
+        <div><h1>9 -> </h1><label id="rank8"></label></div><br>
+        <div><h1>10 -></h1><label id="rank9"></label></div><br>
+        <button id="closeRanking">Fechar</button>
     </div>
     <canvas id="meuCanvas" width="600" height="600"></canvas>
     <script type="module" src="meuScript.js"></script>
