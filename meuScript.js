@@ -13,18 +13,18 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
-
+let top = []
 async function getTop(){
     const q = query(collection(db, "pontuacao"), orderBy("ponto", "desc"), limit(10));
     const querySnapshot = await getDocs(q);
     const topPontuacoes = querySnapshot.docs.map(doc => doc.data());
-    return topPontuacoes;
+    top = topPontuacoes
 }
 async function adicionarPontuacao() {
     try {
       const docRef = await addDoc(collection(db, "pontuacao"), {
         nome: document.getElementById('nome').value,
-        pontos: points
+        ponto: points
       });
       
       alert('Pontos adicionados!!!')
@@ -349,7 +349,7 @@ const criadorLazers = setInterval(()=>{
 },1500)
 
 document.getElementById('ranking').addEventListener('click',async ()=>{
-    let top = await getTop();
+    await getTop();
     console.log(top)
     document.getElementById('rank').style.display = 'flex'
     for(let i = 0; i<top.length; i++){
