@@ -1,5 +1,5 @@
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-app.js';
-import { getFirestore, collection, getDocs, query, orderBy, limit } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
+import { getFirestore, collection, getDocs, query, orderBy, limit, addDoc } from 'https://www.gstatic.com/firebasejs/10.8.1/firebase-firestore.js';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBuvDVa9zEfMiWXZ8C1qjZBcQDRpMLYAbk",
@@ -20,7 +20,18 @@ async function getTop(){
     const topPontuacoes = querySnapshot.docs.map(doc => doc.data());
     return topPontuacoes;
 }
-
+async function adicionarPontuacao() {
+    try {
+      const docRef = await addDoc(collection(db, "pontuacao"), {
+        nome: document.getElementById('nome').value,
+        pontos: points
+      });
+      
+      alert('Pontos adicionados!!!')
+    } catch (e) {
+      alert(`Erro:${e}, contatar o suporte!!!`)
+    }
+  }
 
 const canvas = document.getElementById('meuCanvas');
 const ctx = canvas.getContext('2d');
@@ -121,8 +132,8 @@ function desligar(){
     clearInterval(teleportador)
     clearInterval(criadorPontos)
     clearInterval(criadorLazers)
+    document.getElementById('pontuar').textContent = `Sua pontuação foi: ${points}`
     document.getElementById('modal').style.display = "flex"
-
 }
 
 
@@ -347,4 +358,7 @@ document.getElementById('ranking').addEventListener('click',async ()=>{
 })
 document.getElementById('closeRanking').addEventListener('click',()=>{
     document.getElementById('rank').style.display = 'none'
+})
+document.getElementById('enviar').addEventListener('click',async ()=>{
+    await adicionarPontuacao()
 })
